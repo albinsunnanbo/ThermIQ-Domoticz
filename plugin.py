@@ -1,5 +1,5 @@
 """
-<plugin key="ThermIQPlugin" name="ThermIQ MQTT Plugin" author="Jack Fagner" version="0.1.0">
+<plugin key="ThermIQPlugin" name="ThermIQ MQTT Plugin" author="Jack Fagner" version="0.2.0">
     <description>
       <h2>ThermIQ MQTT Plugin</h2><br/>
       <h3>by Jack Fagner</h3>
@@ -117,6 +117,14 @@ class BasePlugin:
               Devices[Unit].Update(0, newTemp)
             except Exception as e:
               Domoticz.Debug(str(e))
+        if( Unit==168 and str(Command)=="Set Level" ):
+          newTemp = str(int(Level))
+          if (self.mqttClient.isConnected):
+            try:
+              self.mqttClient.publish(writeTopic, '{"d68":'+newTemp+'}')
+              Devices[Unit].Update(0, newTemp)
+            except Exception as e:
+              Domoticz.Debug(str(e))
         if( Unit==101 and str(Command)=="Set Level" ):
           setTopic = self.base_topic + "/SET"
           newTempStr = str(Level)
@@ -193,6 +201,7 @@ class BasePlugin:
         elif(str(message)=="disconnected"):         
             Domoticz.Error("mqtt disconnected")
         else:
+            # FIXME: Add support for hex registers (rXX)
             payload =  json.loads( message.replace("'",'"').lower() )
             if( "rssi" in payload ):
               Domoticz.Debug("rssi: " + str( payload["rssi"] ) )
@@ -230,6 +239,42 @@ class BasePlugin:
               Domoticz.Debug("indoor temp (d1/d2): " + indoorTempStr )
               devparams = { "Name" : "Indoor temp", "DeviceID" : "indoortemp", "Unit": 101, "Type": 242, "Subtype": 1 }
               addOrUpdateDevice(0, indoorTempStr, **devparams)
+            if( "d68" in payload ):
+              Domoticz.Debug("hotwater start temp (d68): " + str( payload["d68"] ) )
+              devparams = { "Name" : "Hotwater start temp", "DeviceID" : "hotwaterstart", "Unit": 168, "Type": 242, "Subtype": 1 }
+              addOrUpdateDevice(0, str( payload["d68"] ), **devparams)
+            if( "d13" in payload ):
+              Domoticz.Debug("aux heater (d13): " + str( payload["d13"] ) )
+              devparams = { "Name" : "Aux heater power", "DeviceID" : "auxheaterkw", "Unit": 113, "Type": 243, "Subtype": 31, "Options" : { "Custom" : "1;kW"} }
+              auxPower = 0
+              if str( payload["d13"] ) == "1":
+                auxPower = 3
+              elif str( payload["d13"] ) == "2":
+                auxPower = 6
+              elif str( payload["d13"] ) == "3":
+                auxPower = 9
+              addOrUpdateDevice(0, str( auxPower ), **devparams)
+            if( "d30" in payload ):
+              Domoticz.Debug("flowlinepump speed (d30): " + str( payload["d30"] ) )
+              devparams = { "Name" : "Flowlinepump speed", "DeviceID" : "flowlinepump", "Unit": 130, "TypeName": "Percentage" }
+              addOrUpdateDevice(0, str( payload["d30"] ), **devparams)
+            if( "d31" in payload ):
+              Domoticz.Debug("brinepump speed (d31): " + str( payload["d31"] ) )
+              devparams = { "Name" : "Brinepump speed", "DeviceID" : "brinepump", "Unit": 131, "TypeName": "Percentage" }
+              addOrUpdateDevice(0, str( payload["d31"] ), **devparams)
+            if( "d16" in payload ):
+              Domoticz.Debug("status (d16): " + str( payload["d16"] ) )
+              compressor = 0
+              hotwaterprod = 0
+              if( int(payload["d16"]) & 2 == 2 ):
+                compressor = 100
+              if( int(payload["d16"]) & 8 == 8 ):
+                hotwaterprod = 100
+              devparams = { "Name" : "Compressor", "DeviceID" : "compressor", "Unit": 116, "TypeName": "Percentage" }
+              addOrUpdateDevice(0, str( compressor ), **devparams)
+              devparams = { "Name" : "Hotwater production", "DeviceID" : "hotwaterprod", "Unit": 216, "TypeName": "Percentage" }
+              addOrUpdateDevice(0, str( hotwaterprod ), **devparams)
+
               
         return True
     
