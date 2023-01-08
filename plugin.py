@@ -296,6 +296,55 @@ class BasePlugin:
               devparams = { "Name" : "Runtime 6 kW", "DeviceID" : "boiler_6kw_on_runtime_h", "Unit": 214, "Type": 113, "Subtype": 0, "Switchtype": 3, "Description": "Hour counter"}
               addOrUpdateDevice(0, str( payload["d114"] ), **devparams)
 
+            # Integral
+            if( "d25" in payload ):
+              Domoticz.Debug("integral (a1) (d25): " + str( payload["d25"] ) )
+              devparams = { "Name" : "Integral (A1)", "DeviceID" : "integral1", "Unit": 125, "Type": 243, "Subtype": 31, "Options" : { "Custom" : "1;°min"}, "Description": "Integral °min"}
+              addOrUpdateDevice(0, str( payload["d25"] ), **devparams)
+
+            # Alarms
+            if( "d19" in payload ):
+              Domoticz.Debug("status(d19): " + str( payload["d19"] ) )
+              #Type = General, Subtype = Alert
+              devparams = { "Name" : "Alarm 19", "DeviceID" : "alarm_19", "Unit": 119, "TypeName": "Alert", "Description": "Alarm level"}
+              addOrUpdateDevice(0, str( payload["d19"] ), **devparams)
+
+            if( "d20" in payload ):
+              Domoticz.Debug("status(d20): " + str( payload["d20"] ) )
+              devparams = { "Name" : "Alarm 20", "DeviceID" : "alarm_20", "Unit": 120, "TypeName": "Alert", "Description": "Alarm level"}
+              addOrUpdateDevice(0, str( payload["d20"] ), **devparams)
+
+            if( "d19" in payload and "d20" in payload):
+              arr = []
+              if( int(payload["d19"]) & 1 == 1 ):
+                arr.append("Alarm highpr.pressostate")
+              if( int(payload["d19"]) & 2 == 2 ):
+                arr.append("Alarm lowpr.pressostate")
+              if( int(payload["d19"]) & 4 == 4 ):
+                arr.append("Alarm motorcircuit breaker")
+              if( int(payload["d19"]) & 8 == 8 ):
+                arr.append("Alarm low flow brine")
+              if( int(payload["d19"]) & 16 == 16 ):
+                arr.append("Alarm low temp. brine")
+
+              if( int(payload["d20"]) & 1 == 1 ):
+                arr.append("Alarm outdoor t-sensor")
+              if( int(payload["d20"]) & 2 == 2 ):
+                arr.append("Alarm supplyline t-sensor")
+              if( int(payload["d20"]) & 4 == 4 ):
+                arr.append("Alarm returnline t-sensor")
+              if( int(payload["d20"]) & 8 == 8 ):
+                arr.append("Alarm hotw. t-sensor")
+              if( int(payload["d20"]) & 16 == 16 ):
+                arr.append("Alarm indoor t-sensor")
+              if( int(payload["d20"]) & 32 == 32 ):
+                arr.append("Alarm incorrect 3-phase order")
+              if( int(payload["d20"]) & 64 == 64 ):
+                arr.append("Alarm overheating")
+
+              devparams = { "Name" : "Alarm Description (19+20)", "DeviceID" : "alarm_description", "Unit": 1, "TypeName": "Text", "Description": "Alarm description"}
+              addOrUpdateDevice(0, ", ".join(arr), **devparams)
+
         return True
     
 
