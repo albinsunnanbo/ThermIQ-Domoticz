@@ -275,7 +275,96 @@ class BasePlugin:
               devparams = { "Name" : "Hotwater production", "DeviceID" : "hotwaterprod", "Unit": 216, "TypeName": "Percentage" }
               addOrUpdateDevice(0, str( hotwaterprod ), **devparams)
 
-              
+            if( "d19" in payload ):
+              Domoticz.Debug("status(d19): " + str( payload["d19"] ) )
+              highpressure_alm = 0
+              if (int(payload["d19"]) & 1 == 1):
+                highpressure_alm = 100
+              #Type = General, Subtype = Alert
+              devparams = { "Name" : "Alarm highpr.pressostate", "DeviceID" : "highpressure_alm", "Unit": 190, "Type": 243, "Subtype": 22}
+              addOrUpdateDevice(0, str( highpressure_alm ), **devparams)
+
+              lowpressure_alm = 0
+              if (int(payload["d19"]) & 2 == 2):
+                lowpressure_alm = 100
+              #Type = General, Subtype = Alert
+              devparams = { "Name" : "Alarm lowpr.pressostate", "DeviceID" : "lowpressure_alm", "Unit": 191, "Type": 243, "Subtype": 22}
+              addOrUpdateDevice(0, str( lowpressure_alm ), **devparams)
+
+              motorbreaker_alm = 0
+              if (int(payload["d19"]) & 4 == 4):
+                motorbreaker_alm = 100
+              #Type = General, Subtype = Alert
+              devparams = { "Name" : "Alarm motorcircuit breaker", "DeviceID" : "motorbreaker_alm", "Unit": 192, "Type": 243, "Subtype": 22}
+              addOrUpdateDevice(0, str( motorbreaker_alm ), **devparams)
+
+              brine_flow_alm = 0
+              if (int(payload["d19"]) & 8 == 8):
+                brine_flow_alm = 100
+              #Type = General, Subtype = Alert
+              devparams = { "Name" : "Alarm low flow brine", "DeviceID" : "brine_flow_alm", "Unit": 193, "Type": 243, "Subtype": 22}
+              addOrUpdateDevice(0, str( brine_flow_alm ), **devparams)
+
+              brine_temperature_alm = 0
+              if (int(payload["d19"]) & 16 == 16):
+                brine_temperature_alm = 100
+              #Type = General, Subtype = Alert
+              devparams = { "Name" : "Alarm low temp. brine", "DeviceID" : "brine_temperature_alm", "Unit": 194, "Type": 243, "Subtype": 22}
+              addOrUpdateDevice(0, str( brine_temperature_alm ), **devparams)
+
+
+            if( "d20" in payload ):
+              Domoticz.Debug("status(d20): " + str( payload["d20"] ) )
+              outdoor_sensor_alm = 0
+              if (int(payload["d20"]) & 1 == 1):
+                outdoor_sensor_alm = 100
+              #Type = General, Subtype = Alert
+              devparams = { "Name" : "Alarm outdoor t-sensor", "DeviceID" : "outdoor_sensor_alm", "Unit": 200, "Type": 243, "Subtype": 22}
+              addOrUpdateDevice(0, str( outdoor_sensor_alm ), **devparams)
+
+              supplyline_sensor_alm = 0
+              if (int(payload["d20"]) & 2 == 2):
+                supplyline_sensor_alm = 100
+              #Type = General, Subtype = Alert
+              devparams = { "Name" : "Alarm supplyline t-sensor", "DeviceID" : "supplyline_sensor_alm", "Unit": 201, "Type": 243, "Subtype": 22}
+              addOrUpdateDevice(0, str( supplyline_sensor_alm ), **devparams)
+
+              returnline_sensor_alm = 0
+              if (int(payload["d20"]) & 4 == 4):
+                returnline_sensor_alm = 100
+              #Type = General, Subtype = Alert
+              devparams = { "Name" : "Alarm returnline t-sensor", "DeviceID" : "returnline_sensor_alm", "Unit": 202, "Type": 243, "Subtype": 22}
+              addOrUpdateDevice(0, str( returnline_sensor_alm ), **devparams)
+
+              boiler_sensor_alm = 0
+              if (int(payload["d20"]) & 8 == 8):
+                boiler_sensor_alm = 100
+              #Type = General, Subtype = Alert
+              devparams = { "Name" : "Alarm hotw. t-sensor", "DeviceID" : "boiler_sensor_alm", "Unit": 203, "Type": 243, "Subtype": 22}
+              addOrUpdateDevice(0, str( boiler_sensor_alm ), **devparams)
+
+              indoor_sensor_alm = 0
+              if (int(payload["d20"]) & 16 == 16):
+                indoor_sensor_alm = 100
+              #Type = General, Subtype = Alert
+              devparams = { "Name" : "Alarm indoor t-sensor", "DeviceID" : "indoor_sensor_alm", "Unit": 204, "Type": 243, "Subtype": 22}
+              addOrUpdateDevice(0, str( indoor_sensor_alm ), **devparams)
+
+              phase_order_alm = 0
+              if (int(payload["d20"]) & 32 == 32):
+                phase_order_alm = 100
+              #Type = General, Subtype = Alert
+              devparams = { "Name" : "Alarm incorrect 3-phase order", "DeviceID" : "phase_order_alm", "Unit": 205, "Type": 243, "Subtype": 22}
+              addOrUpdateDevice(0, str( phase_order_alm ), **devparams)
+
+              overheating_alm = 0
+              if (int(payload["d20"]) & 64 == 64):
+                overheating_alm = 100
+              #Type = General, Subtype = Alert
+              devparams = { "Name" : "Alarm overheating", "DeviceID" : "overheating_alm", "Unit": 206, "Type": 243, "Subtype": 22}
+              addOrUpdateDevice(0, str( overheating_alm ), **devparams)
+
+
         return True
     
 
