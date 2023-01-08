@@ -275,6 +275,27 @@ class BasePlugin:
               devparams = { "Name" : "Hotwater production", "DeviceID" : "hotwaterprod", "Unit": 216, "TypeName": "Percentage" }
               addOrUpdateDevice(0, str( hotwaterprod ), **devparams)
 
+            # Run time registers
+            if( "d104" in payload ):
+              Domoticz.Debug("runtime compressor (d104): " + str( payload["d104"] ) )
+              devparams = { "Name" : "Runtime compressor", "DeviceID" : "compressor_runtime_h", "Unit": 204, "Type": 113, "Subtype": 0, "Switchtype": 3, "Description": "Hour counter"}
+              addOrUpdateDevice(0, str( payload["d104"] ), **devparams)
+
+            if( "d106" in payload ):
+              Domoticz.Debug("runtime 3 kw (d106): " + str( payload["d106"] ) )
+              devparams = { "Name" : "Runtime 3 kW", "DeviceID" : "boiler_3kw_runtime_h", "Unit": 206, "Type": 113, "Subtype": 0, "Switchtype": 3, "Description": "Hour counter"}
+              addOrUpdateDevice(0, str( payload["d106"] ), **devparams)
+
+            if( "d108" in payload ):
+              Domoticz.Debug("runtime hotwater production (d108): " + str( payload["d108"] ) )
+              devparams = { "Name" : "Runtime hotwater production", "DeviceID" : "hotwater_runtime_h", "Unit": 208, "Type": 113, "Subtype": 0, "Switchtype": 3, "Description": "Hour counter"}
+              addOrUpdateDevice(0, str( payload["d108"] ), **devparams)
+
+            if( "d114" in payload ):
+              Domoticz.Debug("runtime 6 kw (d114): " + str( payload["d114"] ) )
+              devparams = { "Name" : "Runtime 6 kW", "DeviceID" : "boiler_6kw_on_runtime_h", "Unit": 214, "Type": 113, "Subtype": 0, "Switchtype": 3, "Description": "Hour counter"}
+              addOrUpdateDevice(0, str( payload["d114"] ), **devparams)
+
             # Integral
             if( "d25" in payload ):
               Domoticz.Debug("integral (a1) (d25): " + str( payload["d25"] ) )
