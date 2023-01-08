@@ -275,6 +275,12 @@ class BasePlugin:
               devparams = { "Name" : "Hotwater production", "DeviceID" : "hotwaterprod", "Unit": 216, "TypeName": "Percentage" }
               addOrUpdateDevice(0, str( hotwaterprod ), **devparams)
 
+            # Integral
+            if( "d25" in payload ):
+              Domoticz.Debug("integral (a1) (d25): " + str( payload["d25"] ) )
+              devparams = { "Name" : "Integral (A1)", "DeviceID" : "integral1", "Unit": 125, "Type": 243, "Subtype": 31, "Options" : { "Custom" : "1;°min"}, "Description": "Integral °min"}
+              addOrUpdateDevice(0, str( payload["d25"] ), **devparams)
+
             # Alarms
             if( "d19" in payload ):
               Domoticz.Debug("status(d19): " + str( payload["d19"] ) )
