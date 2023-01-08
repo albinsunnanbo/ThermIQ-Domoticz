@@ -275,15 +275,16 @@ class BasePlugin:
               devparams = { "Name" : "Hotwater production", "DeviceID" : "hotwaterprod", "Unit": 216, "TypeName": "Percentage" }
               addOrUpdateDevice(0, str( hotwaterprod ), **devparams)
 
+            # Alarms
             if( "d19" in payload ):
               Domoticz.Debug("status(d19): " + str( payload["d19"] ) )
               #Type = General, Subtype = Alert
-              devparams = { "Name" : "Alarm 19", "DeviceID" : "alarm_19", "Unit": 119, "TypeName": "Alert"}
+              devparams = { "Name" : "Alarm 19", "DeviceID" : "alarm_19", "Unit": 119, "TypeName": "Alert", "Description": "Alarm level"}
               addOrUpdateDevice(0, str( payload["d19"] ), **devparams)
 
             if( "d20" in payload ):
-              #Type = General, Subtype = Alert
-              devparams = { "Name" : "Alarm 20", "DeviceID" : "alarm_20", "Unit": 120, "TypeName": "Alert"}
+              Domoticz.Debug("status(d20): " + str( payload["d20"] ) )
+              devparams = { "Name" : "Alarm 20", "DeviceID" : "alarm_20", "Unit": 120, "TypeName": "Alert", "Description": "Alarm level"}
               addOrUpdateDevice(0, str( payload["d20"] ), **devparams)
 
             if( "d19" in payload and "d20" in payload):
@@ -314,7 +315,7 @@ class BasePlugin:
               if( int(payload["d20"]) & 64 == 64 ):
                 arr.append("Alarm overheating")
 
-              devparams = { "Name" : "Alarm Description", "DeviceID" : "alarm_description", "Unit": 1, "TypeName": "Text"}
+              devparams = { "Name" : "Alarm Description (19+20)", "DeviceID" : "alarm_description", "Unit": 1, "TypeName": "Text", "Description": "Alarm description"}
               addOrUpdateDevice(0, ", ".join(arr), **devparams)
 
         return True
