@@ -278,9 +278,9 @@ class BasePlugin:
             # Integral
             if( "d25" in payload ):
               Domoticz.Debug("integral (a1) (d25): " + str( payload["d25"] ) )
-              devparams = { "Name" : "Integral (A1)", "DeviceID" : "integral1", "Unit": 125, "Type": 113, "Subtype": 0, "Switchtype": 3, "Description": "Integral °min"}
+              devparams = { "Name" : "Integral (A1)", "DeviceID" : "integral1", "Unit": 125, "Type": 243, "Subtype": 31, "Options" : { "Custom" : "1;°min"}, "Description": "Integral °min"}
               addOrUpdateDevice(0, str( payload["d25"] ), **devparams)
-              
+
         return True
     
 
