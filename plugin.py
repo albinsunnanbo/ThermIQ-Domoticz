@@ -345,6 +345,36 @@ class BasePlugin:
               devparams = { "Name" : "Alarm Description (19+20)", "DeviceID" : "alarm_description", "Unit": 1, "TypeName": "Text", "Description": "Alarm description"}
               addOrUpdateDevice(0, ", ".join(arr), **devparams)
 
+            if( "d5" in payload ):
+              Domoticz.Debug("supplyline temp. (d5): " + str( payload["d5"] ) )
+              devparams = { "Name" : "Supplyline temp.", "DeviceID" : "supplyline_t", "Unit": 105, "TypeName": "Temperature"}
+              addOrUpdateDevice(0, str( payload["d5"] ), **devparams)
+
+            if( "d6" in payload ):
+              Domoticz.Debug("returnline temp. (d6): " + str( payload["d6"] ) )
+              devparams = { "Name" : "Returnline temp.", "DeviceID" : "returnline_t", "Unit": 106, "TypeName": "Temperature"}
+              addOrUpdateDevice(0, str( payload["d6"] ), **devparams)
+
+            if( "d8" in payload ):
+              Domoticz.Debug("brine out temp. (d8): " + str( payload["d8"] ) )
+              devparams = { "Name" : "Brine out temp.", "DeviceID" : "brine_out_t", "Unit": 108, "TypeName": "Temperature"}
+              addOrUpdateDevice(0, str( payload["d8"] ), **devparams)
+
+            if( "d9" in payload ):
+              Domoticz.Debug("brine in temp. (d9): " + str( payload["d9"] ) )
+              devparams = { "Name" : "Brine in temp.", "DeviceID" : "brine_in_t", "Unit": 109, "TypeName": "Temperature"}
+              addOrUpdateDevice(0, str( payload["d9"] ), **devparams)
+
+            if( "d24" in payload ):
+              Domoticz.Debug("hotw. supplyline temp. (d24): " + str( payload["d24"] ) )
+              devparams = { "Name" : "Hotw. supplyline temp.", "DeviceID" : "hgw_water_t", "Unit": 124, "TypeName": "Temperature"}
+              addOrUpdateDevice(0, str( payload["d24"] ), **devparams)
+
+            if( "d84" in payload ):
+              Domoticz.Debug("hotwater stop temp. (d84): " + str( payload["d84"] ) )
+              devparams = { "Name" : "Hotwater stop temp.", "DeviceID" : "hotwater_stop_t", "Unit": 184, "Type": 242, "Subtype": 1}
+              addOrUpdateDevice(0, str( payload["d84"] ), **devparams)
+
         return True
     
 
