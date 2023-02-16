@@ -230,10 +230,6 @@ class BasePlugin:
               Domoticz.Debug("outdoor temp (d0): " + str( payload["d0"] ) )
               devparams = { "Name" : "Outdoor temp", "DeviceID" : "outtemp", "Unit": 100, "TypeName": "Temperature" }
               addOrUpdateDevice(0, str( payload["d0"] ), **devparams)
-            if( "d12" in payload ):
-              Domoticz.Debug("electrical current (d12): " + str( payload["d12"] ) )
-              devparams = { "Name" : "Electrical Current", "DeviceID" : "current", "Unit": 112, "Type": 243, "Subtype": 23 }
-              addOrUpdateDevice(0, str( payload["d12"] ), **devparams)
             if( "d1" in payload and "d2" in payload ):
               indoorTempStr = str( payload["d1"] ) + "." + str( payload["d2"] )
               Domoticz.Debug("indoor temp (d1/d2): " + indoorTempStr )
@@ -364,11 +360,6 @@ class BasePlugin:
               Domoticz.Debug("brine in temp. (d9): " + str( payload["d9"] ) )
               devparams = { "Name" : "Brine in temp.", "DeviceID" : "brine_in_t", "Unit": 109, "TypeName": "Temperature"}
               addOrUpdateDevice(0, str( payload["d9"] ), **devparams)
-
-            if( "d24" in payload ):
-              Domoticz.Debug("hotw. supplyline temp. (d24): " + str( payload["d24"] ) )
-              devparams = { "Name" : "Hotw. supplyline temp.", "DeviceID" : "hgw_water_t", "Unit": 124, "TypeName": "Temperature"}
-              addOrUpdateDevice(0, str( payload["d24"] ), **devparams)
 
             if( "d84" in payload ):
               Domoticz.Debug("hotwater stop temp. (d84): " + str( payload["d84"] ) )
